@@ -1,145 +1,223 @@
-/* 扁平化設計配色與排版 */
 :root {
-    --primary: #3b82f6;
-    --secondary: #f59e42;
-    --background: #f7f7fa;
-    --card: #fff;
-    --correct: #22c55e;
-    --incorrect: #ef4444;
-    --gray: #e5e7eb;
-    --text: #222;
+    --primary: #2563eb;       /* 主色：亮藍 */
+    --primary-light: #3b82f6;
+    --secondary: #fbbf24;     /* 輔色：亮黃 */
+    --bg: #f9fafb;            /* 背景：極淺灰 */
+    --white: #fff;
+    --gray: #6b7280;
+    --gray-light: #e5e7eb;
+    --success: #22c55e;
+    --error: #ef4444;
+    --font-main: 'Noto Sans TC', 'Segoe UI', Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 body {
-    font-family: 'Noto Sans TC', Arial, sans-serif;
-    background: var(--background);
-    color: var(--text);
+    font-family: var(--font-main);
+    background: var(--bg);
+    color: #222;
     margin: 0;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    line-height: 1.7;
 }
 
 header {
     background: var(--primary);
-    color: #fff;
-    text-align: center;
+    color: var(--white);
     padding: 2rem 1rem 1rem 1rem;
-    border-radius: 0 0 1.5rem 1.5rem;
+    text-align: center;
+    border-radius: 0 0 20px 20px;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: var(--secondary);
+    margin-top: 0.5rem;
 }
 
 main {
-    flex: 1;
-    max-width: 600px;
+    max-width: 700px;
     margin: 2rem auto;
-    background: var(--card);
-    border-radius: 1rem;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
-    padding: 2rem 1.5rem;
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: none; /* 無陰影，純扁平 */
 }
 
 #score-section {
-    background: var(--gray);
-    padding: 1rem;
-    border-radius: 0.75rem;
-    margin-bottom: 1.5rem;
     text-align: center;
+    margin-bottom: 2rem;
 }
 
-#score-section.hidden,
-#result-section.hidden {
-    display: none;
-}
-
-#score {
+#score-section h2 {
+    font-size: 2.1rem;
     color: var(--primary);
-    font-size: 2rem;
-    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+#summary {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    color: var(--gray);
 }
 
 #quiz-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 ol#question-list {
-    list-style: decimal inside;
-    padding-left: 0;
+    padding-left: 1.2rem;
 }
 
-.question-card {
-    background: var(--gray);
-    border-radius: 0.75rem;
-    padding: 1rem;
-    margin-bottom: 1rem;
+.question-block {
+    margin-bottom: 2.2rem;
+    padding: 1.2rem 1rem;
+    border-radius: 10px;
+    background: var(--bg);
+    border: 2px solid var(--gray-light);
+    transition: border 0.2s;
+}
+
+.question-title {
+    font-size: 1.13rem;
+    font-weight: 700;
+    margin-bottom: 0.7rem;
+    color: var(--primary);
+    letter-spacing: 0.01em;
 }
 
 .options {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    margin-top: 0.5rem;
+    gap: 0.7rem;
 }
 
-.option-label {
-    background: #fff;
-    border: 2px solid var(--gray);
-    border-radius: 0.5rem;
-    padding: 0.5rem 1rem;
+.option label {
     cursor: pointer;
-    transition: border 0.2s;
+    display: flex;
+    align-items: center;
+    padding: 0.55rem 0.85rem;
+    border-radius: 7px;
+    font-size: 1.08rem;
+    background: var(--white);
+    border: 1.5px solid var(--gray-light);
+    transition: background 0.2s, border 0.2s;
 }
 
-input[type="radio"]:checked + .option-label {
-    border: 2px solid var(--primary);
-    background: #e0f2fe;
+.option input[type="radio"] {
+    margin-right: 0.7rem;
+    accent-color: var(--primary);
+    width: 1.1em;
+    height: 1.1em;
+}
+
+.option label:hover, .option input:focus + label {
+    background: #e0e7ff;
+    border-color: var(--primary-light);
 }
 
 button#submit-btn {
     background: var(--primary);
-    color: #fff;
+    color: var(--white);
     border: none;
-    border-radius: 0.75rem;
-    padding: 1rem;
-    font-size: 1.2rem;
-    font-weight: bold;
+    padding: 0.95rem 2.5rem;
+    font-size: 1.15rem;
+    border-radius: 8px;
     cursor: pointer;
-    margin-top: 1rem;
-    transition: background 0.2s;
+    font-weight: 700;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 1.5rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    letter-spacing: 0.03em;
+}
+button#submit-btn:hover, button#submit-btn:focus {
+    background: var(--primary-light);
+    transform: translateY(-2px) scale(1.03);
 }
 
-button#submit-btn:hover {
-    background: var(--secondary);
+#analysis-section {
+    margin-top: 2rem;
 }
 
-.result-item {
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    border-radius: 0.75rem;
-    background: var(--gray);
+.analysis-block {
+    background: #f1f5f9;
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.2rem;
+    border-left: 6px solid var(--primary);
+    font-size: 1.04rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
 }
 
-.result-item.correct {
-    border-left: 8px solid var(--correct);
+.analysis-block.correct {
+    border-left-color: var(--success);
+    background: #e6fbe9;
 }
 
-.result-item.incorrect {
-    border-left: 8px solid var(--incorrect);
+.analysis-block.incorrect {
+    border-left-color: var(--error);
+    background: #fef2f2;
 }
 
-.result-title {
+.analysis-title {
     font-weight: bold;
+    color: var(--primary);
+    margin-bottom: 0.3rem;
 }
 
-.result-explanation {
-    margin-top: 0.5rem;
-    color: #555;
+.analysis-correct {
+    color: var(--success);
+    font-weight: bold;
+    font-size: 1.08rem;
+}
+
+.analysis-incorrect {
+    color: var(--error);
+    font-weight: bold;
+    font-size: 1.08rem;
 }
 
 footer {
     text-align: center;
-    padding: 2rem 0 1rem 0;
-    color: #aaa;
+    color: var(--gray);
     font-size: 0.95rem;
+    margin-top: 3rem;
+    padding-bottom: 1.5rem;
+}
+
+/* 隱藏區塊 */
+.hidden {
+    display: none;
+}
+
+/* 響應式設計 */
+@media (max-width: 900px) {
+    main { padding: 1.2rem; }
+}
+@media (max-width: 600px) {
+    main {
+        padding: 0.7rem;
+        border-radius: 0;
+    }
+    header {
+        padding: 1.2rem 0.5rem 0.8rem 0.5rem;
+        border-radius: 0 0 12px 12px;
+    }
+    .question-block, .analysis-block {
+        padding: 0.8rem 0.5rem;
+    }
+    #score-section h2 { font-size: 1.3rem; }
+}
+
+/* 強化可讀性與焦點 */
+:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
 }
