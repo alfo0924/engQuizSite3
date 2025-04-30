@@ -1,0 +1,145 @@
+/* 扁平化設計配色與排版 */
+:root {
+    --primary: #3b82f6;
+    --secondary: #f59e42;
+    --background: #f7f7fa;
+    --card: #fff;
+    --correct: #22c55e;
+    --incorrect: #ef4444;
+    --gray: #e5e7eb;
+    --text: #222;
+}
+
+body {
+    font-family: 'Noto Sans TC', Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background: var(--primary);
+    color: #fff;
+    text-align: center;
+    padding: 2rem 1rem 1rem 1rem;
+    border-radius: 0 0 1.5rem 1.5rem;
+}
+
+main {
+    flex: 1;
+    max-width: 600px;
+    margin: 2rem auto;
+    background: var(--card);
+    border-radius: 1rem;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    padding: 2rem 1.5rem;
+}
+
+#score-section {
+    background: var(--gray);
+    padding: 1rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+#score-section.hidden,
+#result-section.hidden {
+    display: none;
+}
+
+#score {
+    color: var(--primary);
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+#quiz-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+ol#question-list {
+    list-style: decimal inside;
+    padding-left: 0;
+}
+
+.question-card {
+    background: var(--gray);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.option-label {
+    background: #fff;
+    border: 2px solid var(--gray);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: border 0.2s;
+}
+
+input[type="radio"]:checked + .option-label {
+    border: 2px solid var(--primary);
+    background: #e0f2fe;
+}
+
+button#submit-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background 0.2s;
+}
+
+button#submit-btn:hover {
+    background: var(--secondary);
+}
+
+.result-item {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    background: var(--gray);
+}
+
+.result-item.correct {
+    border-left: 8px solid var(--correct);
+}
+
+.result-item.incorrect {
+    border-left: 8px solid var(--incorrect);
+}
+
+.result-title {
+    font-weight: bold;
+}
+
+.result-explanation {
+    margin-top: 0.5rem;
+    color: #555;
+}
+
+footer {
+    text-align: center;
+    padding: 2rem 0 1rem 0;
+    color: #aaa;
+    font-size: 0.95rem;
+}

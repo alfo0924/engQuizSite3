@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMaster 英文文法快測站</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <h1>QuizMaster 英文文法快測站</h1>
+    <p>多益 & 托福常見題型 25 題精選</p>
+</header>
+<main>
+    <section id="score-section" class="hidden">
+        <h2>您的分數：<span id="score"></span> / 25</h2>
+        <div id="score-analysis"></div>
+    </section>
+    <form id="quiz-form">
+        <ol id="question-list"></ol>
+        <button type="submit" id="submit-btn">送出答案</button>
+    </form>
+    <section id="result-section" class="hidden">
+        <h2>詳細解析</h2>
+        <div id="result-details"></div>
+    </section>
+</main>
+<footer>
+    <small>© 2025 QuizMaster 英文文法快測站</small>
+</footer>
+<script src="quiz.js"></script>
+</body>
+</html>
