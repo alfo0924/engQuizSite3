@@ -1,8 +1,8 @@
 :root {
-    --primary: #2563eb;       /* 主色：亮藍 */
+    --primary: #2563eb;
     --primary-light: #3b82f6;
-    --secondary: #fbbf24;     /* 輔色：亮黃 */
-    --bg: #f9fafb;            /* 背景：極淺灰 */
+    --secondary: #fbbf24;
+    --bg: #f9fafb;
     --white: #fff;
     --gray: #6b7280;
     --gray-light: #e5e7eb;
@@ -44,7 +44,7 @@ main {
     background: var(--white);
     border-radius: 16px;
     padding: 2rem;
-    box-shadow: none; /* 無陰影，純扁平 */
+    box-shadow: none;
 }
 
 #score-section {
@@ -140,18 +140,14 @@ button#submit-btn:hover, button#submit-btn:focus {
     transform: translateY(-2px) scale(1.03);
 }
 
-#analysis-section {
-    margin-top: 2rem;
-}
-
 .analysis-block {
     background: #f1f5f9;
     border-radius: 8px;
     padding: 1rem 1.2rem;
-    margin-bottom: 1.2rem;
+    margin-top: 1rem;
     border-left: 6px solid var(--primary);
     font-size: 1.04rem;
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: 0.4rem;
 }
@@ -159,11 +155,13 @@ button#submit-btn:hover, button#submit-btn:focus {
 .analysis-block.correct {
     border-left-color: var(--success);
     background: #e6fbe9;
+    display: block;
 }
 
 .analysis-block.incorrect {
     border-left-color: var(--error);
     background: #fef2f2;
+    display: block;
 }
 
 .analysis-title {
@@ -192,12 +190,10 @@ footer {
     padding-bottom: 1.5rem;
 }
 
-/* 隱藏區塊 */
 .hidden {
-    display: none;
+    display: none !important;
 }
 
-/* 響應式設計 */
 @media (max-width: 900px) {
     main { padding: 1.2rem; }
 }
@@ -216,7 +212,6 @@ footer {
     #score-section h2 { font-size: 1.3rem; }
 }
 
-/* 強化可讀性與焦點 */
 :focus-visible {
     outline: 2px solid var(--primary);
     outline-offset: 2px;

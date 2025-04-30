@@ -1,5 +1,3 @@
-// quiz.js
-
 // 25題多益/托福常見文法題庫，含解析、題型
 const questions = [
     {
@@ -200,10 +198,14 @@ const quizForm = document.getElementById('quiz-form');
 const scoreSection = document.getElementById('score-section');
 const scoreSpan = document.getElementById('score');
 const summaryDiv = document.getElementById('summary');
-const analysisSection = document.getElementById('analysis-section');
-const analysisList = document.getElementById('analysis-list');
 
-// 動態產生題目
+// 多益與托福分數估計對照表
+const scoreMapping = {
+    TOEIC: { min: 10, max: 990 },
+    TOEFL: { min: 10, max: 120 }
+};
+
+// 動態產生題目與每題解析區塊
 function renderQuestions() {
     questionList.innerHTML = '';
     questions.forEach((q, idx) => {
@@ -219,61 +221,67 @@ function renderQuestions() {
           </div>`
         ).join('')}
       </div>
+      <div class="analysis-block" id="analysis-${idx}"></div>
     `;
         questionList.appendChild(block);
     });
 }
 
-// 統計錯誤類型
-function countErrorTypes(results) {
-    const errorCount = {};
-    results.forEach(r => {
-        if (!r.correct) {
-            errorCount[r.type] = (errorCount[r.type] || 0) + 1;
-        }
-    });
-    return errorCount;
+// 計算分數並轉換為多益與托福估計分數
+function calculateScore(results) {
+    const total = questions.length;
+    const correctCount = results.filter(r => r.correct).length;
+    const toeicScore = Math.round(scoreMapping.TOEIC.min + (scoreMapping.TOEIC.max - scoreMapping.TOEIC.min) * (correctCount / total));
+    const toeflScore = Math.round(scoreMapping.TOEFL.min + (scoreMapping.TOEFL.max - scoreMapping.TOEFL.min) * (correctCount / total));
+    return { toeicScore, toeflScore, correctCount };
 }
 
 // 顯示總結與建議
-function showSummary(score, results) {
-    scoreSpan.textContent = score;
-    const errorTypes = countErrorTypes(results);
-    if (score === questions.length) {
-        summaryDiv.textContent = "恭喜全對！英文文法基礎扎實！";
+function showSummary(results) {
+    const { toeicScore, toeflScore, correctCount } = calculateScore(results);
+    scoreSpan.textContent = `${correctCount} / ${questions.length}（多益估分: ${toeicScore}，托福估分: ${toeflScore}）`;
+    let html = '';
+    if (correctCount === questions.length) {
+        html = "恭喜全對！英文文法基礎扎實！";
     } else {
-        let html = "需加強：";
+        const errorTypes = {};
+        results.forEach(r => {
+            if (!r.correct) {
+                errorTypes[r.type] = (errorTypes[r.type] || 0) + 1;
+            }
+        });
         if (Object.keys(errorTypes).length === 0) {
-            html += "請檢查未作答題目。";
+            html = "請檢查未作答題目。";
         } else {
-            html += Object.entries(errorTypes).map(([type, cnt]) =>
+            html = "需加強：<br>" + Object.entries(errorTypes).map(([type, cnt]) =>
                 `${type}（${cnt}題）：${typeAdvice[type] || ""}`
             ).join("<br>");
         }
-        summaryDiv.innerHTML = html;
     }
+    summaryDiv.innerHTML = html;
 }
 
-// 顯示題目解析
+// 顯示每題解析
 function showAnalysis(results) {
-    analysisList.innerHTML = '';
     results.forEach((r, idx) => {
-        const block = document.createElement('div');
-        block.className = 'analysis-block ' + (r.correct ? 'correct' : 'incorrect');
-        block.innerHTML = `
-      <div class="analysis-title">${idx + 1}. ${questions[idx].question}</div>
-      <div>
-        ${r.correct
-            ? `<span class="analysis-correct">✔ 正確</span>`
-            : `<span class="analysis-incorrect">✘ 錯誤</span>
-            <br>您的答案：${r.yourAnswer !== null && r.yourAnswer !== undefined ? questions[idx].options[r.yourAnswer] : '未作答'}
-            <br>正確答案：${questions[idx].options[questions[idx].answer]}
-            <br>解析：${questions[idx].explanation}
-            <br>建議：${typeAdvice[questions[idx].type] || ''}`
+        const analysisBlock = document.getElementById(`analysis-${idx}`);
+        if (!analysisBlock) return;
+        if (r.correct) {
+            analysisBlock.innerHTML = `<span class="analysis-correct">✔ 正確</span>`;
+            analysisBlock.classList.remove('incorrect');
+            analysisBlock.classList.add('correct');
+        } else {
+            analysisBlock.innerHTML = `
+        <span class="analysis-incorrect">✘ 錯誤</span><br>
+        您的答案：${r.yourAnswer !== null && r.yourAnswer !== undefined ? questions[idx].options[r.yourAnswer] : '未作答'}<br>
+        正確答案：${questions[idx].options[questions[idx].answer]}<br>
+        解析：${questions[idx].explanation}<br>
+        建議：${typeAdvice[questions[idx].type] || ''}
+      `;
+            analysisBlock.classList.remove('correct');
+            analysisBlock.classList.add('incorrect');
         }
-      </div>
-    `;
-        analysisList.appendChild(block);
+        analysisBlock.style.display = 'block';
     });
 }
 
@@ -281,7 +289,6 @@ function showAnalysis(results) {
 quizForm.addEventListener('submit', function(e) {
     e.preventDefault();
     const results = [];
-    let score = 0;
     for (let i = 0; i < questions.length; i++) {
         const radios = document.getElementsByName(`q${i}`);
         let selected = null;
@@ -292,17 +299,15 @@ quizForm.addEventListener('submit', function(e) {
             }
         }
         const correct = selected === questions[i].answer;
-        if (correct) score++;
         results.push({
             correct,
             yourAnswer: selected,
             type: questions[i].type
         });
     }
-    showSummary(score, results);
+    showSummary(results);
     showAnalysis(results);
     scoreSection.classList.remove('hidden');
-    analysisSection.classList.remove('hidden');
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
